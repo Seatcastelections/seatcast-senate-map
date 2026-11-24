@@ -141,7 +141,7 @@ async function loadWarDatabase(){
     const response=await fetch(WAR_CSV_URL);
     if(!response.ok)throw new Error("Could not load WAR database");
     const csvText=await response.text();
-    warRows=csvText.replace(/^\\uFEFF/,"").split(/\\r?\\n/).slice(1).filter(Boolean).map(parseCsvLine);
+    warRows=csvText.replace(/^\uFEFF/,"").split(/\r?\n/).slice(1).filter(Boolean).map(parseCsvLine);
     if(selected)renderWarHistory(selected);
   }catch(error){
     console.error(error);
@@ -149,7 +149,7 @@ async function loadWarDatabase(){
     if(el)el.innerHTML='<div class="war-empty">WAR history could not be loaded. Please refresh the page.</div>';
   }
 }
-function normalizeCandidate(name){return String(name||"").toLowerCase().replace(/\\([^)]*\\)/g,"").replace(/[^a-z0-9]/g,"")}
+function normalizeCandidate(name){return String(name||"").toLowerCase().replace(/\([^)]*\)/g,"").replace(/[^a-z0-9]/g,"")}
 function renderWarHistory(abbr){
   const el=$("warhistory");
   const race=races.find(x=>x.abbr===abbr);
